@@ -9,8 +9,9 @@
 
 require 'pry'
 require 'pry-byebug'
-require './setup_players'
 require "./player.rb"
+require './setup_players'
+
 #binding.pry
 
 
@@ -20,8 +21,9 @@ END {
 
 puts "Hi, Let\'s play Tic-Tac-Toe in the console."
 
-setup_players
+2.times{ setup_players}
 
+#binding.pry
 game1 = Game.new
 }
 

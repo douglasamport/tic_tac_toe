@@ -1,3 +1,5 @@
+require "./player.rb"
+
 def get_symbol 
   entry = gets.chomp.upcase
   unless entry == "X" || entry == "O"
@@ -8,13 +10,14 @@ def get_symbol
 end
 
 def setup_players
-  puts 'Enter a name for player one.'
+  puts 'Enter a name for the player.'
   temp_name = gets.chomp
-  puts "Welcome #{temp_name}. Would you like to be X's or 0's (Please enter x or o. X's go first)"
-  temp_symbol = get_symbol
-  "#{temp_name.strip}_player" = Player.new(temp_name, temp_symbol)
-  puts 'Enter a name for player two.'
-  temp_name = gets.chomp
-  temp_symbol = player1.symbol == 'X' ? 'O' : 'X'
-  player2 = Player.new(temp_name, temp_symbol)
+  if Player.used_symbols.empty?
+    puts "Welcome #{temp_name}. Would you like to be X's or O's (Please enter x or o. X's go first)"
+    temp_symbol = get_symbol
+    Player.used_symbols << temp_symbol
+  else
+    temp_symbol = Player.used_symbols.include?("X") ? 'O' : 'X'
+  end
+  Player.new(temp_name, temp_symbol)
 end
