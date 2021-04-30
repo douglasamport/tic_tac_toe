@@ -10,4 +10,3 @@ class Player
   def self.players
     @@players
   end
-end
