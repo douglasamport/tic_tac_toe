@@ -15,6 +15,10 @@ class Game
     @possible_scenerios = []
     @winner = false
     @game_board = refresh_gameboard
+    start_up
+  end
+
+  def start_up
     puts 'This is your game board.  Each number represents a position for Tic-Tac-Toe'
     print_status
     round
@@ -29,59 +33,61 @@ class Game
   end
 
   def round
-# binding.pry
     if check_for_winner
-# binding.pry
-      puts "#{self.first_player.name} please select a number to place your X"
-      player_selection = self.get_selection
-      self.update_board(player_selection, self.first_player.symbol)
-      scenerios_array = self.update_scenerios
-      self.check_game_status(scenerios_array, self.first_player.name, self.first_player.symbol)
+      puts "#{first_player.name} please select a number to place your X"
+      player_selection = make_selection
+      update_board(player_selection, first_player.symbol)
+      scenerios_array = update_scenerios
+      check_game_status(scenerios_array, self.first_player.name, self.first_player.symbol)
     end
     if check_for_winner
-      puts "#{self.second_player.name} please select a number to place your O"
-      player_selection = self.get_selection
-      self.update_board(player_selection, self.second_player.symbol)
+      puts "#{second_player.name} please select a number to place your O"
+      player_selection = make_selection
+      update_board(player_selection, second_player.symbol)
       scenerios_array = self.update_scenerios
-      self.check_game_status(scenerios_array, self.first_player.name, self.first_player.symbol)
-      self.round
+      check_game_status(scenerios_array, first_player.name, self.first_player.symbol)
+      round
     end
   end
 
-  def get_selection
+  def make_selection
     selection = gets.chomp.to_i
-# binding.pry
-    unless selection.to_s.length == 1 && selection.class == Integer && selection != 0
-      puts "Invalid selection. Please enter a number 1 thru 9"
-      self.get_selection
-    else
-      if self.played_arr.include?(selection)
-        puts "That space has already been played. Please make another selection."
-        self.get_selection
+    binding.pry
+    if (1..9).to_a.include?(selection)
+      if played_arr.include?(selection)
+        puts 'That space has already been played. Please make another selection.'
+        make_selection
       else
         selection
       end
+    else
+      puts 'Invalid selection. Please enter a number 1 thru 9'
+      make_selection
     end
-  
   end
 
-  def update_board(num, current_symbol) # maybe this could use an array
-    
-    self.board_arr[num - 1] = current_symbol
-    
-    self.played_arr << num
+#   def make_selection
+#     selection = gets.chomp.to_i
+#  binding.pry
 
-    @game_board = 
-    " #{@board_arr[0]} | #{@board_arr[1]} | #{@board_arr[2]} 
-    #{@ln}
-     #{@board_arr[3]} | #{@board_arr[4]} | #{@board_arr[5]} 
-    #{@ln} 
-    #{@board_arr[6]} | #{@board_arr[7]} | #{@board_arr[8]} "
-    .lines.map { |str| str.strip.center(20)}.join("\n")
+#     unless selection.to_s.length == 1 && selection.class == Integer && selection != 0
+#       puts 'Invalid selection. Please enter a number 1 thru 9'
+#       make_selection
+#     else
+#       if played_arr.include?(selection)
+#         puts 'That space has already been played. Please make another selection.'
+#         make_selection
+#       else
+#         selection
+#       end
+#     end
+#   end
 
-# binding.pry
-
-    self.print_status
+  def update_board(num, current_symbol)
+    board_arr[num - 1] = current_symbol
+    played_arr << num
+    @game_board = refresh_gameboard
+    print_status
   end
 
   def update_scenerios
@@ -95,16 +101,15 @@ class Game
                            [@board_arr[2], @board_arr[4], @board_arr[6]]]
   end
 
-    def check_game_status(arr, name, symbol)
-      if arr.map{ |array| array.all?{ |s| s===symbol}}.include?(true)
-        puts "#{name} is the Winner!"
-        @winner = true
-      elsif played_arr.length == 9
-        puts "Game is a draw"
-        @winner = true
-      end  
+  def check_game_status(arr, name, symbol)
+    if arr.map{ |array| array.all?{ |s| s===symbol}}.include?(true)
+      puts "#{name} is the Winner!"
+      @winner = true
+    elsif played_arr.length == 9
+      puts 'Game over!  It\'s a tie.'
+      @winner = true
     end
-
+  end
 
   def print_status
     puts 'The current game board is'

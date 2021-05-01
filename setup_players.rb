@@ -10,7 +10,7 @@ def find_symbol
 end
 
 def setup_players(int)
-  puts "Enter a name for player #{(int + 1).to_s}."
+  puts "Enter a name for player #{int + 1}."
   temp_name = gets.chomp
   if Player.used_symbols.empty?
     puts "Welcome #{temp_name}. Would you like to be X's or O's (Please enter x or o. X's go first)"
