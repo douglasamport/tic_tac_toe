@@ -1,8 +1,9 @@
 require './player'
 
 class Game
-  private
   
+  private
+
   attr_reader :first_player, :second_player
   attr_accessor :board_arr, :played_arr
 
@@ -34,25 +35,29 @@ class Game
 
   def round
     if check_for_winner
-      puts "#{first_player.name} please select a number to place your X"
+      print_select_a_number(first_player)
       player_selection = make_selection
       update_board(player_selection, first_player.symbol)
       scenerios_array = update_scenerios
-      check_game_status(scenerios_array, self.first_player.name, self.first_player.symbol)
+      check_game_status(scenerios_array, first_player.name, first_player.symbol)
     end
     if check_for_winner
-      puts "#{second_player.name} please select a number to place your O"
+      print_select_a_number(second_player)
       player_selection = make_selection
       update_board(player_selection, second_player.symbol)
-      scenerios_array = self.update_scenerios
-      check_game_status(scenerios_array, first_player.name, self.first_player.symbol)
+      scenerios_array = update_scenerios
+      check_game_status(scenerios_array, first_player.name, first_player.symbol)
       round
     end
   end
 
+  def print_select_a_number(player)
+    puts "#{player.name} please select a number to place your #{player.symbol}"
+  end
+
   def make_selection
     selection = gets.chomp.to_i
-    binding.pry
+    #binding.pry
     if (1..9).to_a.include?(selection)
       if played_arr.include?(selection)
         puts 'That space has already been played. Please make another selection.'
@@ -65,23 +70,6 @@ class Game
       make_selection
     end
   end
-
-#   def make_selection
-#     selection = gets.chomp.to_i
-#  binding.pry
-
-#     unless selection.to_s.length == 1 && selection.class == Integer && selection != 0
-#       puts 'Invalid selection. Please enter a number 1 thru 9'
-#       make_selection
-#     else
-#       if played_arr.include?(selection)
-#         puts 'That space has already been played. Please make another selection.'
-#         make_selection
-#       else
-#         selection
-#       end
-#     end
-#   end
 
   def update_board(num, current_symbol)
     board_arr[num - 1] = current_symbol
