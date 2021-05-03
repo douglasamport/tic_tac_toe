@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './player'
 
 def find_symbol

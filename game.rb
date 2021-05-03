@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require './player'
 
-class Game
-  
+class Game #:nodoc:
+
   private
 
   attr_reader :first_player, :second_player
@@ -33,42 +35,45 @@ class Game
     #{@board_arr[6]} | #{@board_arr[7]} | #{@board_arr[8]} ".lines.map { |str| str.strip.center(20)}.join("\n")
   end
 
-  def round
-    if check_for_winner
-      print_select_a_number(first_player)
-      player_selection = make_selection
-      update_board(player_selection, first_player.symbol)
-      scenerios_array = update_scenerios
-      check_game_status(scenerios_array, first_player.name, first_player.symbol)
-    end
-    if check_for_winner
-      print_select_a_number(second_player)
-      player_selection = make_selection
-      update_board(player_selection, second_player.symbol)
-      scenerios_array = update_scenerios
-      check_game_status(scenerios_array, first_player.name, first_player.symbol)
-      round
-    end
+  def print_status
+    puts 'The current game board is'
+    puts @game_board
   end
 
-  def print_select_a_number(player)
+  def round
+    half_round(first_player) if check_for_winner
+    half_round(second_player) if check_for_winner
+    round if check_for_winner
+  end
+
+  def check_for_winner
+    @winner == false
+  end
+
+  def half_round(player)
     puts "#{player.name} please select a number to place your #{player.symbol}"
+    player_selection = make_selection
+    update_board(player_selection, player.symbol)
+    scenerios_array = update_scenerios
+    check_game_status(scenerios_array, player.name, player.symbol)
   end
 
   def make_selection
     selection = gets.chomp.to_i
-    #binding.pry
-    if (1..9).to_a.include?(selection)
-      if played_arr.include?(selection)
-        puts 'That space has already been played. Please make another selection.'
-        make_selection
-      else
-        selection
-      end
-    else
-      puts 'Invalid selection. Please enter a number 1 thru 9'
-      make_selection
-    end
+    return err_invalid_selection unless (1..9).to_a.include?(selection)
+    return err_allready_played if played_arr.include?(selection)
+
+    selection
+  end
+
+  def err_invalid_selection
+    puts 'Invalid selection. Please enter a number 1 thru 9'
+    make_selection
+  end
+
+  def err_allready_played
+    puts 'That space has already been played. Please make another selection.'
+    make_selection
   end
 
   def update_board(num, current_symbol)
@@ -90,21 +95,12 @@ class Game
   end
 
   def check_game_status(arr, name, symbol)
-    if arr.map{ |array| array.all?{ |s| s===symbol}}.include?(true)
+    if arr.map{ |array| array.all? { |s| s == symbol } }.include?(true)
       puts "#{name} is the Winner!"
       @winner = true
     elsif played_arr.length == 9
       puts 'Game over!  It\'s a tie.'
       @winner = true
     end
-  end
-
-  def print_status
-    puts 'The current game board is'
-    puts @game_board
-  end
-
-  def check_for_winner
-    @winner == false
   end
 end

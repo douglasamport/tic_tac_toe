@@ -1,11 +1,4 @@
-#to Do
-
-# reset function
-
-
-#review accessors for Game class (need to make private if possible)
-
-#review accessors for Game class (need to make private if possible)
+# frozen_string_literal: true
 
 require 'pry'
 require 'pry-byebug'
@@ -15,6 +8,6 @@ require './game'
 
 puts "Hi, Let\'s play Tic-Tac-Toe in the console."
 
-2.times{ |i| setup_players(i)}
+2.times { |i| setup_players(i) }
 
-game1 = Game.new
+Game.new
