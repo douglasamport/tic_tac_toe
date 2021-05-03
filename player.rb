@@ -2,7 +2,6 @@
 
 class Player #:nodoc:
   attr_reader :name, :symbol
-  attr_accessor :players, :used_symbols
 
   protected
 
@@ -15,21 +14,22 @@ class Player #:nodoc:
     Player.players << self
   end
 
-  def self.whos_on_first
-    Player.players.find { |plyr| plyr.instance_variable_get(:@first) }
-  end
+  class << self
 
-  def self.whats_on_second
-    Player.players.find { |plyr| !plyr.instance_variable_get(:@first) }
-  end
+    def whos_on_first
+      Player.players.find { |plyr| plyr.instance_variable_get(:@first) }
+    end
 
-  def self.players
-    @players
-  end
+    def whats_on_second
+      Player.players.find { |plyr| !plyr.instance_variable_get(:@first) }
+    end
 
-  def self.used_symbols
-    @used_symbols
-  end
+    def players
+      @@players
+    end
 
-  private_class_method :whos_on_first, :whats_on_second
+    def used_symbols
+      @@used_symbols
+    end
+  end
 end

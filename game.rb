@@ -22,7 +22,7 @@ class Game #:nodoc:
   end
 
   def start_up
-    puts 'This is your game board.  Each number represents a position for Tic-Tac-Toe'
+    puts 'This is your game board.  Each number represents a position for Tic-Tac-Toe.'
     print_status
     round
   end
@@ -41,6 +41,7 @@ class Game #:nodoc:
   end
 
   def round
+    # binding.pry
     half_round(first_player) if check_for_winner
     half_round(second_player) if check_for_winner
     round if check_for_winner
@@ -98,9 +99,30 @@ class Game #:nodoc:
     if arr.map{ |array| array.all? { |s| s == symbol } }.include?(true)
       puts "#{name} is the Winner!"
       @winner = true
+      testvariable = play_again
     elsif played_arr.length == 9
       puts 'Game over!  It\'s a tie.'
       @winner = true
+      testvariable = play_again
     end
   end
+
+  def play_again
+    puts 'Would you like to play again? (Y/N)'
+    again = gets.chomp
+    if %w[Y y].include?(again)
+      reset
+      Game.new
+    else
+      puts 'Thanks for playing.'
+      exit
+    end
+  end
+
+  def reset
+    @board_arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    @played_arr = []
+    @winner = false
+  end
+
 end

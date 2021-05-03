@@ -3,11 +3,12 @@
 require 'pry'
 require 'pry-byebug'
 require './player'
-require './setup_players'
+# require './setup_players'
 require './game'
 
 puts "Hi, Let\'s play Tic-Tac-Toe in the console."
 
-2.times { |i| setup_players(i) }
+2.times { |i| Player.setup_players(i) }
 
 Game.new
+
