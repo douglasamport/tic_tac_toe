@@ -3,7 +3,6 @@
 require './player'
 
 class Game #:nodoc:
-
   private
 
   attr_reader :first_player, :second_player
@@ -99,11 +98,11 @@ class Game #:nodoc:
     if arr.map{ |array| array.all? { |s| s == symbol } }.include?(true)
       puts "#{name} is the Winner!"
       @winner = true
-      testvariable = play_again
+      play_again
     elsif played_arr.length == 9
       puts 'Game over!  It\'s a tie.'
       @winner = true
-      testvariable = play_again
+      play_again
     end
   end
 
@@ -124,5 +123,4 @@ class Game #:nodoc:
     @played_arr = []
     @winner = false
   end
-
 end

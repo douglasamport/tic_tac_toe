@@ -37,7 +37,6 @@ class Player #:nodoc:
   end
 
   class << self
-
     def whos_on_first
       Player.players.find { |plyr| plyr.instance_variable_get(:@first) }
     end
